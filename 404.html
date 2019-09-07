@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <title>Link Multiplier</title>
+    </head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+    <body>
+        <div id="mainBox" class="container" style="padding:20px;">
+        </div>
+        <div class="container" style="position:fixed; bottom:0px">
+            Made using: <button class="btn btn-primary btn-sm" onclick="window.location.replace('https:\/\/jogavideos.github.io/')">Link Multiplier by JoGa</a> 
+        </div>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+    <script>
+            let buttonClicked = function(link) {
+                window.location.href = link
+            }
+
+            let data = window.location.pathname.replace(`https://jogavideos.github.io/`, '');
+            data = data.replace("/", '');
+            
+            // data = "U2FsdGVkX19YNMHfk/3TUFXN7E9PPsMOaV+9o3nXfy1M3xTH9MkQ9Ds+PYsw2l3HN+KqlLTBPJxGEJZ3E4KL/H61pWvQzTNnr4PC4kI3Gc8="
+    
+            // console.log(`path:${data}`);
+            if (data.length > 0) {
+                // Decrypt
+                var bytes = CryptoJS.AES.decrypt(data, 'pleaseDontStealMySecretHiddenKeyPlease');
+                var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+    
+                // console.log(bytes);
+                // console.log(plaintext);
+    
+                //convert the decrypted plain text to a json object
+                let jdata = JSON.parse(plaintext);
+                
+                let html = '';
+                jdata.forEach(item => {
+                    html += `
+                        <div class="row" >
+                            <div class="card mx-auto" style="width:100%">
+                                <div class="card-body">
+                                    <button type="button" class="btn btn-dark btn-lg btn-block" onclick="buttonClicked('${item.link}')">${item.title}</button>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                });
+    
+                //set the new inner html for the main Box
+                let mainBox = document.getElementById("mainBox");
+                mainBox.innerHTML = html
+            }
+
+            // Encrypt
+            // var ciphertext = CryptoJS.AES.encrypt('my message', 'pleaseDontStealMySecretHiddenKeyPlease');
+        </script>
+</html>
